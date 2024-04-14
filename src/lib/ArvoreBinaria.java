@@ -41,16 +41,27 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     }
 
     private void addRec(No<T> pai, No<T> node) {
+        // compara o valor a adicionar com o valor do nó pai
         if (comparador.compare(node.getValor(), pai.getValor()) < 0) {
+            //adiciona o novo nó a esquerda caso esse seja menor que o valor do nó pai
+
             if (pai.getFilhoEsquerda() == null) {
+                //se o pai não tem filho esquerdo, apenas adiona o novo valor
                 pai.setFilhoEsquerda(node);
             } else {
+                //caso ela já tenha o filho, chama o método recursivo
                 addRec(pai.getFilhoEsquerda(), node);
             }
-        } else if (comparador.compare(node.getValor(), pai.getValor()) > 0) {
+        }
+
+        else if (comparador.compare(node.getValor(), pai.getValor()) > 0) {
+            //adiciona o novo nó a direita caso esse seja maior que o valor do nó pai
+
             if (pai.getFilhoDireita() == null) {
+                //se o pai não tem filho direito, apenas adiona o novo valor
                 pai.setFilhoDireita(node);
             } else {
+                //caso ela já tenha o filho, chama o método recursivo
                 addRec(pai.getFilhoDireita(), node);
             }
         }
@@ -174,6 +185,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             return -1;
         }
         else{
+            //recebe o valor da recursiva e retira o nó correspondente ao valor da altura
             return alturaRec(atual)-1;
         }
 
@@ -183,9 +195,11 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
         if (node==null) return 0;
 
+        //se chegou a uma folha, retorna 1
         if(node.getFilhoEsquerda() == null && node.getFilhoDireita() == null){
             return 1;
         }
+        //caso tenha um filho ou mais, retorna o maior valor do ramo (esquerdo ou direito) + a altura do nó atual
         return 1 + Math.max(alturaRec(node.getFilhoDireita()), alturaRec(node.getFilhoEsquerda()));
     }
        
