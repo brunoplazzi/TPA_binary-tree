@@ -88,18 +88,20 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
        return null;
    }
 
-    private No<T> removeRec(No<T> pai, T valor) {
+   //método recursivo utilizado para remover elemento da árvore
+   private No<T> removeRec(No<T> pai, T valor) {
         if(pai == null){
             return null;
         }
 
+        //se o valor é menor ou maior que o valor do nó, segue pelo ramo da árvore
         if(comparador.compare(valor, pai.getValor()) < 0){
             pai.setFilhoEsquerda(removeRec(pai.getFilhoEsquerda(), valor));
         }
         else if(comparador.compare(valor, pai.getValor()) > 0){
             pai.setFilhoDireita(removeRec(pai.getFilhoDireita(), valor));
         }
-        //se chegou ate aqui, o nó será removido
+        //se chegou ate aqui, o valor é igual e o nó será removido
         else {
             //caso1: nó não tem filhos
             if (pai.getFilhoEsquerda() == null && pai.getFilhoDireita() == null) {
@@ -132,6 +134,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         //procura o valor na arvore antes de remover
         T remover = pesquisar(valor);
 
+        //chama o método recursivo removeRec, passando a raiz e o valor
         if(remover != null){
             this.raiz = removeRec(this.raiz, valor);
 
@@ -159,6 +162,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     }
 
     private int alturaRec(No<T> node){
+
         if (node==null) return 0;
 
         if(node.getFilhoEsquerda() == null && node.getFilhoDireita() == null){
