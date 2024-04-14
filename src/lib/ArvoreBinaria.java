@@ -6,6 +6,8 @@
 package lib;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  *
@@ -53,12 +55,52 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public String caminharEmNivel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.    
+        if (raiz == null) {
+            return "[]";
+        }
+
+        StringBuilder resultado = new StringBuilder("[");
+        Queue<No<T>> fila = new LinkedList<>();
+        fila.add(raiz);
+
+        caminharEmNivelRec(fila, resultado);
+
+        resultado.append("]");
+        return resultado.toString();
     }
-    
+
+    private void caminharEmNivelRec(Queue<No<T>> fila, StringBuilder resultado) {
+        if (fila.isEmpty()) {
+            return;
+        }
+
+        No<T> no = fila.poll();
+        resultado.append(no.getValor().toString()).append(" \n ");
+
+        if (no.getFilhoEsquerda() != null) {
+            fila.add(no.getFilhoEsquerda());
+        }
+        if (no.getFilhoDireita() != null) {
+            fila.add(no.getFilhoDireita());
+        }
+
+        caminharEmNivelRec(fila, resultado);
+    }
+
+
     @Override
     public String caminharEmOrdem() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.    
+        StringBuilder resultado = new StringBuilder("[");
+        caminharEmOrdem(raiz, resultado);
+        resultado.append("]");
+        return resultado.toString();
     }
-        
+
+    private void caminharEmOrdem(No<T> no, StringBuilder resultado) {
+        if (no != null) {
+            caminharEmOrdem(no.getFilhoEsquerda(), resultado);
+            resultado.append(no.getValor().toString()).append(" \n ");
+            caminharEmOrdem(no.getFilhoDireita(), resultado);
+        }
+    }
 }
