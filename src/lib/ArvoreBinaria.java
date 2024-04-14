@@ -37,9 +37,61 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private No<T> removeRec(No<T> pai, T valor) {
+        if(pai == null){
+            return null;
+        }
+
+        if(comparador.compare(valor, pai.getValor()) < 0){
+            pai.setFilhoEsquerda(removeRec(pai.getFilhoEsquerda(), valor));
+        }
+        else if(comparador.compare(valor, pai.getValor()) > 0){
+            pai.setFilhoDireita(removeRec(pai.getFilhoDireita(), valor));
+        }
+        //se chegou ate aqui, o nó será removido
+        else {
+            //caso1: nó não tem filhos
+            if (pai.getFilhoEsquerda() == null && pai.getFilhoDireita() == null) {
+                return null;
+            }
+            //caso 2: o nó possui apenas 1 filho
+            else if (pai.getFilhoEsquerda() == null) {
+                return pai.getFilhoDireita();
+            }
+            else if (pai.getFilhoDireita() == null) {
+                return pai.getFilhoEsquerda();
+            }
+            //caso 3: o nó possui 2 filhos
+            else {
+                No<T> aux = pai.getFilhoEsquerda();
+                while (aux.getFilhoDireita() != null) {
+                    aux = aux.getFilhoDireita();
+                }
+                pai.setValor(aux.getValor());
+                pai.setFilhoEsquerda(removeRec(pai.getFilhoEsquerda(), pai.getValor()));
+            }
+        }
+
+        return pai;
+    }
+
     @Override
     public T remover(T valor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        //procura o valor na arvore antes de remover
+        T remover = pesquisar(valor);
+
+        if(remover != null){
+            this.raiz = removeRec(this.raiz, valor);
+
+            if (this.raiz == null){
+                return null;
+            }else{
+                return remover;
+            }
+        }else{
+            return null;
+        }
     }
 
     @Override
