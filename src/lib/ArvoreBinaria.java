@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package lib;
-
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -12,7 +11,12 @@ import java.lang.Math;
 
 /**
  *
- * @author victoriocarvalho
+ * @authors
+ * brunoplazzi
+ * filipesuhett
+ * gscalfoni
+ * laraguilar
+ * victoriocarvalho
  */
 public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     
@@ -181,7 +185,9 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     }
 
     @Override
+    // Este método percorre a árvore em nível, visitando os nós de cada nível, começando pela raiz.
     public String caminharEmNivel() {
+        // verifica se a arvore está vazia
         if (raiz == null) {
             return "[]";
         }
@@ -189,14 +195,16 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         StringBuilder resultado = new StringBuilder("[");
         Queue<No<T>> fila = new LinkedList<>();
         fila.add(raiz);
-
+        // chama o método recursivo
         caminharEmNivelRec(fila, resultado);
 
+        // adiciona o fechamento do array e retorna
         resultado.append("]");
         return resultado.toString();
     }
 
     private void caminharEmNivelRec(Queue<No<T>> fila, StringBuilder resultado) {
+        // verifica se a fila está vazia
         if (fila.isEmpty()) {
             return;
         }
@@ -204,6 +212,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         No<T> no = fila.poll();
         resultado.append(no.getValor().toString()).append(" \n ");
 
+        // Adiciona os filhos do nó à fila para visitá-los posteriormente
         if (no.getFilhoEsquerda() != null) {
             fila.add(no.getFilhoEsquerda());
         }
@@ -211,22 +220,34 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             fila.add(no.getFilhoDireita());
         }
 
+        // chama o método recursivo
         caminharEmNivelRec(fila, resultado);
     }
 
 
     @Override
+    // Este método percorre a árvore em ordem, visitando os nós em uma ordem específica (esquerda, raiz, direita).
     public String caminharEmOrdem() {
         StringBuilder resultado = new StringBuilder("[");
+
+        // chama o método recursivo passando a raiz
         caminharEmOrdem(raiz, resultado);
+
+        // adiciona o fechamento do array e retorna
         resultado.append("]");
         return resultado.toString();
     }
 
     private void caminharEmOrdem(No<T> no, StringBuilder resultado) {
+        // verifica se o nó é nulo
         if (no != null) {
+            // chama o método recursivo para o filho esquerdo
             caminharEmOrdem(no.getFilhoEsquerda(), resultado);
+
+            // adiciona o valor do nó ao resultado
             resultado.append(no.getValor().toString()).append(" \n ");
+
+            // chama o método recursivo para o filho direito
             caminharEmOrdem(no.getFilhoDireita(), resultado);
         }
     }
