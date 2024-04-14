@@ -59,10 +59,18 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     @Override
     public T pesquisar(T valor) {
         No<T> atual = this.raiz;
+
+       // verifica se o nó atual está vazio
         while (atual != null) {
+
+            /* compara o valor do parametro com o valor do nó atual utilizando o 
+                comparator "padrao" definido no momento da instanciação da arvore
+            */
             if (this.comparador.compare(valor, atual.getValor()) == 0) {
                 return atual.getValor();
             }
+
+            // verifica se o valor está a esquerda ou direita do nó atual
             else if (this.comparador.compare(valor, atual.getValor()) < 0) {
                 atual = atual.getFilhoEsquerda();
             }
@@ -70,21 +78,31 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 atual = atual.getFilhoDireita();
             }
         }
+
+       // se não encontrar o valor, retorna nulo
         return null;
     }
 
    @Override
     public T pesquisar(T valor, Comparator comparador2) {
        No<T> atual = this.raiz;
+
+       // verifica se o nó atual está vazio
        while (atual != null) {
+
+            // compara o valor do parametro com o valor do nó atual utilizando o comparator passado como parametro
            if (comparador2.compare(valor, atual.getValor()) == 0) {
                return atual.getValor();
+
+            // verifica se o valor está a esquerda ou direita do nó atual
            } else if (comparador2.compare(valor, atual.getValor()) < 0) {
                atual = atual.getFilhoEsquerda();
            } else {
                atual = atual.getFilhoDireita();
            }
        }
+
+       // se não encontrar o valor, retorna nulo
        return null;
    }
 
