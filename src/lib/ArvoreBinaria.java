@@ -8,6 +8,7 @@ package lib;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.lang.Math;
 
 /**
  *
@@ -21,10 +22,34 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     public ArvoreBinaria(Comparator<T> comp) {
         comparador = comp;
     }
-    
+
     @Override
     public void adicionar(T novoValor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Cria um novo nó
+        No<T> node = new No<>(novoValor);
+
+        // caso a arvore esteja vazia, nó vira raiz
+        if (this.raiz == null) {
+            this.raiz = node;
+        } else {
+            addRec(this.raiz, node);
+        }
+    }
+
+    private void addRec(No<T> pai, No<T> node) {
+        if (comparador.compare(node.getValor(), pai.getValor()) < 0) {
+            if (pai.getFilhoEsquerda() == null) {
+                pai.setFilhoEsquerda(node);
+            } else {
+                addRec(pai.getFilhoEsquerda(), node);
+            }
+        } else if (comparador.compare(node.getValor(), pai.getValor()) > 0) {
+            if (pai.getFilhoDireita() == null) {
+                pai.setFilhoDireita(node);
+            } else {
+                addRec(pai.getFilhoDireita(), node);
+            }
+        }
     }
 
     @Override
@@ -118,7 +143,24 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public int altura() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        No<T> atual = this.raiz;
+        //arvore vazia
+        if(atual == null) {
+            return -1;
+        }
+        else{
+            return alturaRec(atual)-1;
+        }
+
+    }
+
+    private int alturaRec(No<T> node){
+        if (node==null) return 0;
+
+        if(node.getFilhoEsquerda() == null && node.getFilhoDireita() == null){
+            return 1;
+        }
+        return 1 + Math.max(alturaRec(node.getFilhoDireita()), alturaRec(node.getFilhoEsquerda()));
     }
        
     
