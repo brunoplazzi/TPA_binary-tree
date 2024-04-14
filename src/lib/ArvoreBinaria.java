@@ -29,13 +29,35 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public T pesquisar(T valor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        No<T> atual = this.raiz;
+        while (atual != null) {
+            if (this.comparador.compare(valor, atual.getValor()) == 0) {
+                return atual.getValor();
+            }
+            else if (this.comparador.compare(valor, atual.getValor()) < 0) {
+                atual = atual.getFilhoEsquerda();
+            }
+            else {
+                atual = atual.getFilhoDireita();
+            }
+        }
+        return null;
     }
 
    @Override
-    public T pesquisar(T valor, Comparator comparador) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public T pesquisar(T valor, Comparator comparador2) {
+       No<T> atual = this.raiz;
+       while (atual != null) {
+           if (comparador2.compare(valor, atual.getValor()) == 0) {
+               return atual.getValor();
+           } else if (comparador2.compare(valor, atual.getValor()) < 0) {
+               atual = atual.getFilhoEsquerda();
+           } else {
+               atual = atual.getFilhoDireita();
+           }
+       }
+       return null;
+   }
 
     private No<T> removeRec(No<T> pai, T valor) {
         if(pai == null){
