@@ -73,6 +73,28 @@ public class Controller {
         }
     }
 
+    public void excluirAlunoPorMatricula(Scanner s){
+        try {
+            System.out.printf("Digite a matrícula do aluno que deseja excluir: ");
+            int matInformada = Integer.parseInt(s.nextLine());
+
+            //primeiro procura o aluno na árvore
+            Aluno alunoExcluir = this.arvAlunos.pesquisar(new Aluno(matInformada, ""));
+
+            //caso seja encontrado, exclui o aluno
+            if (alunoExcluir == null){
+                System.out.printf("Aluno não encontrado.");
+            } else {
+                this.arvAlunos.remover(new Aluno(matInformada, ""));
+                System.out.println("Aluno removido com sucesso");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Matrícula inválida. Por favor, insira um número válido.");
+        } catch (Exception e) {
+            System.out.println("Erro ao excluir aluno: " + e.getMessage());
+        }
+    }
+
     public void informarPreRequisitoDisciplina(Scanner s){
         try {
             System.out.printf("Digite o código da Disciplina pré-requisito a ser procurada: ");
@@ -124,5 +146,20 @@ public class Controller {
         }
     }
 
+    public void vizualizarAlunos() {
+        try {
+            System.out.println(arvAlunos.caminharEmOrdem());
+            System.out.println(arvAlunos.caminharEmNivel());
+        } catch (Exception e) {
+            System.out.println("Erro ao visualizar alunos: " + e.getMessage());
+        }
+    }
 
+    public void vizualizarDisciplinas() {
+        try {
+            System.out.println(arvDisciplina.caminharEmOrdem());
+        } catch (Exception e) {
+            System.out.println("Erro ao visualizar disciplinas: " + e.getMessage());
+        }
+    }
 }
