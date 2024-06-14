@@ -3,6 +3,7 @@ package app;
 import lib.ArvoreBinaria;
 import lib.IArvoreBinaria;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Controller {
@@ -92,6 +93,50 @@ public class Controller {
             System.out.println("Erro: Matrícula inválida. Por favor, insira um número válido.");
         } catch (Exception e) {
             System.out.println("Erro ao excluir aluno: " + e.getMessage());
+        }
+    }
+
+    public void consultarAlunoPorNome(Scanner s){
+        try {
+            //cria o comparador por nome
+            ComparadorAlunoPorNome compPorNomeAluno = new ComparadorAlunoPorNome();
+
+            //solicita o nome do aluno
+            System.out.printf("Digite o Nome do aluno a ser procurado: ");
+            String nome = s.nextLine();
+
+            //procura o aluno
+            Aluno resultado = this.arvAlunos.pesquisar(new Aluno(0, nome), compPorNomeAluno);
+
+            if (resultado != null){
+                //imprime o resultado da busca
+                resultado.consultar();
+            } else {
+                System.out.println("Aluno não encontrado");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar aluno por nome: " + e.getMessage());
+        }
+    }
+
+    public void consultarAlunoPorMatricula(Scanner s){
+        try {
+            //solicita a matricula
+            System.out.printf("Digite o Matrícula do aluno a ser procurado: ");
+            int mat = Integer.parseInt(s.nextLine());
+
+            //procura o aluno
+            Aluno resultado = this.arvAlunos.pesquisar(new Aluno(mat, ""));
+
+            if (resultado != null){
+                resultado.consultar();
+            } else {
+                System.out.println("Aluno não encontrado");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Matrícula inválida. Por favor, insira um número válido.");
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar aluno por matrícula: " + e.getMessage());
         }
     }
 
