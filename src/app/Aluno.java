@@ -35,9 +35,10 @@ public class Aluno  {
     public void adicionarDiscCurs (Disciplina disciplina) {
         if (verficarDiscCurs(disciplina.getPreRequisito())) {
             disciplinasCurs.add(disciplina);
+            System.out.println("Disciplina adicionada com sucesso!");
         }
         else {
-            System.out.println("Disciplina" + disciplina.getNome() + "não pode ser cursada");
+            System.out.println("Disciplina " + disciplina.getNome() + " não pode ser cursada");
         }
     }
 
@@ -47,7 +48,7 @@ public class Aluno  {
         for (String d : preRequi) {
             if (!disciplinasCursNome.contains(d)) {
                 vef = false;
-                System.out.println("Disciplina" + d + "não cursada");
+                System.out.println("Disciplina " + d + " não cursada");
             }
         }
         return vef;
