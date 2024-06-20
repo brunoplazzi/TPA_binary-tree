@@ -31,34 +31,39 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         // Cria um novo nó
         No<T> node = new No<>(novoValor);
 
+        // caso a arvore esteja vazia, nó vira raiz
         if (this.raiz == null) {
             this.raiz = node;
-        } else{
-            this.raiz = adicionarRecursivo(this.raiz, node);
+        } else {
+            adicionarRecursivo(this.raiz, node);
         }
     }
 
-    protected No<T> adicionarRecursivo(No<T> pai, No<T> node) {
+    private void adicionarRecursivo(No<T> pai, No<T> node) {
         int comparacao = comparador.compare(node.getValor(), pai.getValor());
 
         if (comparacao < 0) {
-            //adicionarAEsquerda(pai, node);
-            if (pai.getFilhoEsquerda() == null) {
-                pai.setFilhoEsquerda(node);
-            } else {
-                pai.setFilhoEsquerda(adicionarRecursivo(pai.getFilhoEsquerda(), node));
-            }
+            adicionarAEsquerda(pai, node);
         } else if (comparacao > 0) {
-            //adicionarADireita(pai, node);
-            if (pai.getFilhoDireita() == null) {
-                pai.setFilhoDireita(node);
-            } else {
-                pai.setFilhoDireita(adicionarRecursivo(pai.getFilhoDireita(), node));
-            }
+            adicionarADireita(pai, node);
         }
-        return pai;
     }
 
+    private void adicionarAEsquerda(No<T> pai, No<T> node) {
+        if (pai.getFilhoEsquerda() == null) {
+            pai.setFilhoEsquerda(node);
+        } else {
+            adicionarRecursivo(pai.getFilhoEsquerda(), node);
+        }
+    }
+
+    private void adicionarADireita(No<T> pai, No<T> node) {
+        if (pai.getFilhoDireita() == null) {
+            pai.setFilhoDireita(node);
+        } else {
+            adicionarRecursivo(pai.getFilhoDireita(), node);
+        }
+    }
 
     @Override
     public T pesquisar(T valor) {
@@ -108,9 +113,31 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
         return pesquisarRecursivo(atual.getFilhoDireita(), valor, comparador2);
     }
+//    @Override
+//    public T pesquisar(T valor, Comparator comparador2) {
+//        No<T> atual = this.raiz;
+//
+//        // verifica se o nó atual está vazio
+//        while (atual != null) {
+//
+//            // compara o valor do parametro com o valor do nó atual utilizando o comparator passado como parametro
+//            if (comparador2.compare(valor, atual.getValor()) == 0) {
+//                return atual.getValor();
+//
+//                // verifica se o valor está a esquerda ou direita do nó atual
+//            } else if (comparador2.compare(valor, atual.getValor()) < 0) {
+//                atual = atual.getFilhoEsquerda();
+//            } else {
+//                atual = atual.getFilhoDireita();
+//            }
+//        }
+//
+//        // se não encontrar o valor, retorna nulo
+//        return null;
+//    }
 
     //método recursivo utilizado para remover elemento da árvore
-    protected No<T> removeRec(No<T> pai, T valor) {
+    private No<T> removeRec(No<T> pai, T valor) {
         if (pai == null) {
             return null;
         }

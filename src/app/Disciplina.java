@@ -25,6 +25,14 @@ public class Disciplina {
         this.preRequisito.add(requisito);
     }
 
+//    public void consultar(){
+//        System.out.println("código: " + this.getCodigo());
+//        System.out.println("nome: " + this.getNome());
+//        System.out.println("cargaHoraria: " + this.getCargaHoraria());
+//        for (int i = 0; i < this.preRequisito.size(); i++) {
+//            System.out.println(this.preRequisito.get(i));
+//        }
+//    }
 
     public int getCodigo() {
         return this.codigo;
