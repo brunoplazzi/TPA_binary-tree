@@ -12,12 +12,6 @@ public class mainTeste {
 
         int op = -1;
 
-        try{
-
-        } catch (NumberFormatException e){
-
-        }
-
         while(op != 0){
             try {
                 op = menu.escolha();

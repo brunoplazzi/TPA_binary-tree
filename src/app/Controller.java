@@ -1,5 +1,6 @@
 package app;
 
+import lib.ArvoreAVL;
 import lib.ArvoreBinaria;
 import lib.IArvoreBinaria;
 
@@ -8,16 +9,19 @@ import java.util.Scanner;
 
 public class Controller {
 
-    private IArvoreBinaria<Aluno> arvAlunos;
-    private IArvoreBinaria<Disciplina> arvDisciplina;
+//    private IArvoreBinaria<Aluno> arvAlunos;
+//    private IArvoreBinaria<Disciplina> arvDisciplina;
+
+    private ArvoreAVL<Aluno> arvAlunos;
+    private ArvoreAVL<Disciplina> arvDisciplina;
 
     public Controller() {
 
         ComparadorAlunoPorMatricula compPorMatricula = new ComparadorAlunoPorMatricula();
         ComparadorDisciplinaPorCodigo compPorCodigo = new ComparadorDisciplinaPorCodigo();
 
-        this.arvAlunos = new ArvoreBinaria<>(compPorMatricula);
-        this.arvDisciplina = new ArvoreBinaria<>(compPorCodigo);
+        this.arvAlunos = new ArvoreAVL<>(compPorMatricula);
+        this.arvDisciplina = new ArvoreAVL<>(compPorCodigo);
 
     }
 
@@ -195,7 +199,7 @@ public class Controller {
 
     public void vizualizarAlunos() {
         try {
-            System.out.println(arvAlunos.caminharEmOrdem());
+            System.out.println(arvAlunos.caminharEmNivel());
         } catch (Exception e) {
             System.out.println("Erro ao visualizar alunos: " + e.getMessage());
         }
