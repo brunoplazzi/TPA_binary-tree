@@ -21,6 +21,36 @@ public class No<T> {
         this.filhoDireita = null;
         this.filhoEsquerda = null;
     }
+
+    //metodos para arvore AVL
+
+    public int obterAltura(){
+
+        return obterAltura(this);
+    }
+
+    private int obterAltura(No<T> r){
+
+        if(r == null){
+
+            return -1;
+        }else{
+
+            int hd = obterAltura(r.getFilhoDireita());
+            int he = obterAltura(r.getFilhoEsquerda());
+            if (hd > he){
+                return hd+1;
+            } else {
+                return he+1;
+            }
+        }
+    }
+
+    public int fatorBalanceamento(){
+
+        return obterAltura(this.getFilhoDireita()) - obterAltura(this.getFilhoEsquerda());
+    }
+
     
     /**
      * @return the valor

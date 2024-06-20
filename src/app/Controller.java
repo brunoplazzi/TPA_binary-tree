@@ -1,22 +1,27 @@
 package app;
 
+import lib.ArvoreAVL;
 import lib.ArvoreBinaria;
 import lib.IArvoreBinaria;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Controller {
 
-    private IArvoreBinaria<Aluno> arvAlunos;
-    private IArvoreBinaria<Disciplina> arvDisciplina;
+//    private IArvoreBinaria<Aluno> arvAlunos;
+//    private IArvoreBinaria<Disciplina> arvDisciplina;
+
+    private ArvoreAVL<Aluno> arvAlunos;
+    private ArvoreAVL<Disciplina> arvDisciplina;
 
     public Controller() {
 
         ComparadorAlunoPorMatricula compPorMatricula = new ComparadorAlunoPorMatricula();
         ComparadorDisciplinaPorCodigo compPorCodigo = new ComparadorDisciplinaPorCodigo();
 
-        this.arvAlunos = new ArvoreBinaria<>(compPorMatricula);
-        this.arvDisciplina = new ArvoreBinaria<>(compPorCodigo);
+        this.arvAlunos = new ArvoreAVL<>(compPorMatricula);
+        this.arvDisciplina = new ArvoreAVL<>(compPorCodigo);
 
     }
 
@@ -73,5 +78,138 @@ public class Controller {
         }
     }
 
+    public Aluno consultarAlunoPorMatricula(Scanner s){
+        try {
+            //solicita a matricula
+            System.out.printf("Digite o Matrícula do aluno a ser procurado: ");
+            int mat = Integer.parseInt(s.nextLine());
 
+            //procura o aluno
+            Aluno resultado = this.arvAlunos.pesquisar(new Aluno(mat, ""));
+
+            return resultado;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Matrícula inválida. Por favor, insira um número válido.");
+            return null;
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar aluno por matrícula: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void excluirAlunoPorMatricula(Scanner s){
+        try {
+//            System.out.printf("Digite a matrícula do aluno que deseja excluir: ");
+//            int matInformada = Integer.parseInt(s.nextLine());
+//
+//            //primeiro procura o aluno na árvore
+//            Aluno alunoExcluir = this.arvAlunos.pesquisar(new Aluno(matInformada, ""));
+
+            Aluno alunoExcluir = consultarAlunoPorMatricula(s);
+
+            //caso seja encontrado, exclui o aluno
+            if (alunoExcluir == null){
+                System.out.printf("Aluno não encontrado.");
+            } else {
+                this.arvAlunos.remover(alunoExcluir);
+                System.out.println("Aluno removido com sucesso");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Matrícula inválida. Por favor, insira um número válido.");
+        } catch (Exception e) {
+            System.out.println("Erro ao excluir aluno: " + e.getMessage());
+        }
+    }
+
+    public void consultarAlunoPorNome(Scanner s){
+        try {
+            //cria o comparador por nome
+            ComparadorAlunoPorNome compPorNomeAluno = new ComparadorAlunoPorNome();
+
+            //solicita o nome do aluno
+            System.out.printf("Digite o Nome do aluno a ser procurado: ");
+            String nome = s.nextLine();
+
+            //procura o aluno
+            Aluno resultado = this.arvAlunos.pesquisar(new Aluno(0, nome), compPorNomeAluno);
+
+            if (resultado != null){
+                //imprime o resultado da busca
+                resultado.consultar();
+            } else {
+                System.out.println("Aluno não encontrado");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar aluno por nome: " + e.getMessage());
+        }
+    }
+
+
+    public void informarPreRequisitoDisciplina(Scanner s){
+        try {
+            System.out.printf("Digite o código da Disciplina pré-requisito a ser procurada: ");
+            int codPreReq = Integer.parseInt(s.nextLine());
+            System.out.printf("Agora digite o código da Disciplina que terá esse pré requisito: ");
+            int codDisciplina = Integer.parseInt(s.nextLine());
+
+            Disciplina preReq = this.arvDisciplina.pesquisar(new Disciplina("", codPreReq, 0));
+            Disciplina disc = this.arvDisciplina.pesquisar(new Disciplina("", codDisciplina, 0));
+
+            if (preReq != null && disc != null){
+                disc.adicionarPreRequisito(preReq.getNome());
+                System.out.println("Requisito adicionado");
+            } else {
+                System.out.println("Alguma disciplina não existe. Primeiro crie a disciplina para depois manipular a mesma");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Código de disciplina inválido. Por favor, insira números válidos.");
+        } catch (Exception e) {
+            System.out.println("Erro ao informar pré-requisito da disciplina: " + e.getMessage());
+        }
+    }
+
+    public void informarDisciplinasCursadasPorAluno(Scanner s) {
+        try {
+//            System.out.printf("Digite a matrícula do aluno: ");
+//            int matInformada = Integer.parseInt(s.nextLine());
+
+            Aluno resultado = consultarAlunoPorMatricula(s);
+
+            System.out.printf("Digite o código da disciplina: ");
+            int codDis = Integer.parseInt(s.nextLine());
+
+            if (resultado != null){
+                Disciplina disc = this.arvDisciplina.pesquisar(new Disciplina("", codDis, 0));
+
+                if (disc != null){
+                    resultado.adicionarDiscCurs(disc);
+                } else {
+                    System.out.println("Disciplina não existe.");
+                }
+            } else {
+                System.out.println("Aluno não encontrado");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Matrícula ou código de disciplina inválido. Por favor, insira números válidos.");
+        } catch (Exception e) {
+            System.out.println("Erro ao informar disciplinas cursadas pelo aluno: " + e.getMessage());
+        }
+    }
+
+    public void vizualizarAlunos() {
+        try {
+            System.out.println(arvAlunos.caminharEmNivel());
+        } catch (Exception e) {
+            System.out.println("Erro ao visualizar alunos: " + e.getMessage());
+        }
+    }
+
+    public void vizualizarDisciplinas() {
+        try {
+            System.out.println(arvDisciplina.caminharEmOrdem());
+        } catch (Exception e) {
+            System.out.println("Erro ao visualizar disciplinas: " + e.getMessage());
+        }
+    }
 }
